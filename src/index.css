@@ -247,6 +247,15 @@ html.dark .status-lost { background: #4a1d1d; color: #ffc9c9; }
   display: none;
 }
 
+@keyframes drawer-in {
+  from { transform: translateX(-100%); }
+  to { transform: none; }
+}
+
+.drawer-in {
+  animation: drawer-in 180ms ease-out;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
