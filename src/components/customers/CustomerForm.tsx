@@ -120,8 +120,8 @@ export function CustomerForm({
       }}
     >
       <label className="block">
-        <span className="mb-1 block text-sm font-semibold">Name</span>
-        <input className="field" value={value.name} onChange={(event) => set({ name: event.target.value })} autoComplete="name" required />
+        <span className="mb-1 block text-sm font-semibold">Name (optional)</span>
+        <input className="field" value={value.name} onChange={(event) => set({ name: event.target.value })} autoComplete="name" />
       </label>
       <label className="block">
         <span className="mb-1 block text-sm font-semibold">Phone</span>

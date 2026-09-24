@@ -114,12 +114,12 @@ export function parseBackup(raw: unknown): ParsedBackup {
       issues.push(`Row ${row}: the customer record is not valid.`)
       return
     }
-    const name = text(item.name)
+    const name = text(item.name) ?? ''
     const phone = typeof item.phone === 'string' ? normalizePhone(item.phone) : null
     const status = oneOf(item.status, CUSTOMER_STATUSES)
     const enquiryDate = text(item.enquiryDate)
-    if (!name || !phone || !status || !enquiryDate || !isValidDate(enquiryDate)) {
-      issues.push(`Row ${row}: name, a valid mobile number, status, and enquiry date are required.`)
+    if (!phone || !status || !enquiryDate || !isValidDate(enquiryDate)) {
+      issues.push(`Row ${row}: a valid mobile number, status, and enquiry date are required.`)
       return
     }
     const followUpTime = text(item.followUpTime)

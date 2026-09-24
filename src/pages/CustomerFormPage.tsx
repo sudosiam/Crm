@@ -146,7 +146,7 @@ export function CustomerFormPage() {
     <div>
       <Link to={id ? `/customers/${id}` : '/customers'} className="text-sm font-semibold text-brand">Back</Link>
       <h1 className="page-title mt-2">{editing ? 'Edit customer' : 'Add customer'}</h1>
-      <p className="mt-1 text-muted">Name, phone, model, and a follow-up are enough.</p>
+      <p className="mt-1 text-muted">Phone, model, and a follow-up are enough. Name can be added later.</p>
       {error ? <div className="mt-4"><ErrorState message={error} /></div> : null}
       {value ? (
         <div className="mt-5">

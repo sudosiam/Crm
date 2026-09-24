@@ -10,6 +10,10 @@ import type {
   TestRide,
 } from './types'
 
+export function displayName(name: string): string {
+  return name.trim() || 'No name'
+}
+
 export function followUpBucket(
   customer: Pick<Customer, 'followUpDate' | 'status'>,
   today: string,

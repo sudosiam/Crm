@@ -4,6 +4,7 @@ import { EmptyState } from '../components/ui/EmptyState'
 import { SelectField } from '../components/ui/SelectField'
 import { StatusBadge } from '../components/ui/StatusBadge'
 import { useApp } from '../context/AppContext'
+import { displayName } from '../lib/customers'
 import { formatDate, monthBounds, todayISO } from '../lib/dates'
 import { formatPhone } from '../lib/phone'
 import type { Customer } from '../lib/types'
@@ -49,7 +50,7 @@ export function SalesPage() {
             <Link key={customer.id} to={`/customers/${customer.id}`} className="card block px-3 py-2.5">
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <p className="truncate font-semibold">{customer.name}</p>
+                  <p className="truncate font-semibold">{displayName(customer.name)}</p>
                   <p className="tabular-nums">{formatPhone(customer.phoneNormalized)}</p>
                 </div>
                 <StatusBadge status={customer.status} />

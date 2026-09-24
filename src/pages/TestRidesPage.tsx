@@ -4,6 +4,7 @@ import { EmptyState } from '../components/ui/EmptyState'
 import { LoadingState } from '../components/ui/LoadingState'
 import { useApp } from '../context/AppContext'
 import { useToast } from '../context/ToastContext'
+import { displayName } from '../lib/customers'
 import { formatWhen, todayISO } from '../lib/dates'
 import { humanizeError } from '../lib/errors'
 import type { Customer, TestRide } from '../lib/types'
@@ -23,7 +24,10 @@ export function TestRidesPage() {
     setLoading(false)
   }, [repo, workspace?.customers.length, workspace?.organization.updatedAt])
 
-  const name = (id: string) => customers.find((customer) => customer.id === id)?.name ?? 'Customer'
+  const name = (id: string) => {
+    const customer = customers.find((item) => item.id === id)
+    return customer ? displayName(customer.name) : 'Customer'
+  }
   const todayRides = rides.filter((ride) => ride.status === 'SCHEDULED' && ride.scheduledDate === today)
   const upcoming = rides.filter((ride) => ride.status === 'SCHEDULED' && ride.scheduledDate > today)
   const past = rides.filter((ride) => ride.status !== 'SCHEDULED' || ride.scheduledDate < today)

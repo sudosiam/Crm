@@ -28,6 +28,13 @@ function copyState(): WorkspaceData {
 }
 
 describe('customer workflow', () => {
+  it('creates a customer without a name', () => {
+    const data = copyState()
+    const customer = createCustomer(data, ownerActor(), { name: '  ', phone: '9123456781' })
+    expect(customer.name).toBe('')
+    expect(updateCustomer(data, ownerActor(), customer.id, { name: '' }).name).toBe('')
+  })
+
   it('creates a customer and a follow-up', () => {
     const data = copyState()
     const customer = createCustomer(data, ownerActor(), {

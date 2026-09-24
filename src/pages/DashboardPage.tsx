@@ -9,6 +9,7 @@ import { ErrorState } from '../components/ui/ErrorState'
 import { LoadingState } from '../components/ui/LoadingState'
 import { useApp } from '../context/AppContext'
 import { useToast } from '../context/ToastContext'
+import { displayName } from '../lib/customers'
 import { formatWhen, greeting, todayISO } from '../lib/dates'
 import { humanizeError } from '../lib/errors'
 import { maybeNotify } from '../lib/notifications'
@@ -106,7 +107,7 @@ export function DashboardPage() {
                   const person = workspace?.customers.find((item) => item.id === ride.customerId)
                   return (
                     <Link key={ride.id} to={`/customers/${ride.customerId}`} className="card block px-3 py-2.5">
-                      <p className="font-semibold">{person?.name ?? 'Customer'}</p>
+                      <p className="font-semibold">{person ? displayName(person.name) : 'Customer'}</p>
                       <p className="text-muted">{ride.model || person?.model || 'Model not set'}</p>
                       <p className="mt-1 font-semibold">{formatWhen(ride.scheduledDate, ride.scheduledTime, today)}</p>
                     </Link>

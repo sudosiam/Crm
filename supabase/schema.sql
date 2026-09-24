@@ -699,9 +699,6 @@ begin
   if exists (select 1 from public.customers where id = new_id) then
     return new_id;
   end if;
-  if nullif(trim(coalesce(p_name, '')), '') is null then
-    raise exception 'BPH_VALIDATION: Enter the customer name.';
-  end if;
   normalized := public.normalize_phone(p_phone);
   if normalized is null then
     raise exception 'BPH_VALIDATION: Enter a valid 10-digit mobile number.';
@@ -733,7 +730,7 @@ begin
     battery_configuration, budget, source, notes, follow_up_date, follow_up_time,
     assigned_to, created_by, status_changed_at
   ) values (
-    new_id, org_id, trim(p_name), normalized, normalized, next_status,
+    new_id, org_id, trim(coalesce(p_name, '')), normalized, normalized, next_status,
     coalesce(p_enquiry_date, current_date), nullif(trim(coalesce(p_model, '')), ''),
     nullif(trim(coalesce(p_battery, '')), ''), nullif(trim(coalesce(p_budget, '')), ''),
     nullif(trim(coalesce(p_source, '')), ''), nullif(trim(coalesce(p_notes, '')), ''),
@@ -793,9 +790,6 @@ begin
   if normalized is null then
     raise exception 'BPH_VALIDATION: Enter a valid 10-digit mobile number.';
   end if;
-  if nullif(trim(coalesce(p_name, '')), '') is null then
-    raise exception 'BPH_VALIDATION: Enter the customer name.';
-  end if;
   select id into existing_id from public.customers
   where organization_id = current.organization_id and phone_normalized = normalized and id <> current.id
   limit 1;
@@ -809,7 +803,7 @@ begin
     raise exception 'BPH_VALIDATION: Choose a salesperson from the team.';
   end if;
   update public.customers set
-    name = trim(p_name),
+    name = trim(coalesce(p_name, '')),
     phone = normalized,
     phone_normalized = normalized,
     status = coalesce(p_status, status),

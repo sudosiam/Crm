@@ -132,7 +132,6 @@ export function createCustomer(
   options: MutationOptions = {},
 ): Customer {
   const name = input.name.trim()
-  if (!name) throw new DomainError('Enter the customer name.', 'validation')
   const phone = normalizePhone(input.phone)
   if (!phone) throw new DomainError('Enter a valid 10-digit mobile number.', 'validation')
   const match = findPhoneMatch(data, actor, phone)
@@ -211,11 +210,7 @@ export function updateCustomer(
   assertCanEdit(actor, current)
   const at = nowStamp(options)
   const next: Customer = { ...current, updatedAt: at }
-  if (patch.name !== undefined) {
-    const name = patch.name.trim()
-    if (!name) throw new DomainError('Enter the customer name.', 'validation')
-    next.name = name
-  }
+  if (patch.name !== undefined) next.name = patch.name.trim()
   if (patch.phone !== undefined) {
     const phone = normalizePhone(patch.phone)
     if (!phone) throw new DomainError('Enter a valid 10-digit mobile number.', 'validation')

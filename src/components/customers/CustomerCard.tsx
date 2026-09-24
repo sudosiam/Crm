@@ -2,7 +2,7 @@ import { MessageCircle, Phone } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { formatWhen } from '../../lib/dates'
 import { formatPhone, telUrl } from '../../lib/phone'
-import { followUpBucket } from '../../lib/customers'
+import { displayName, followUpBucket } from '../../lib/customers'
 import type { Customer } from '../../lib/types'
 import { StatusBadge } from '../ui/StatusBadge'
 
@@ -31,7 +31,7 @@ export function CustomerCard({
       <div className="px-3 py-2.5">
         <div className="flex items-center justify-between gap-2">
           <Link to={`/customers/${customer.id}`} className="min-w-0 truncate text-sm font-semibold tracking-tight">
-            {customer.name}
+            {displayName(customer.name)}
           </Link>
           <StatusBadge status={customer.status} />
         </div>

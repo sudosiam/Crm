@@ -13,6 +13,7 @@ import { useApp } from '../context/AppContext'
 import { useToast } from '../context/ToastContext'
 import { messageTemplates } from '../lib/business'
 import { LOST_REASONS } from '../lib/types'
+import { displayName } from '../lib/customers'
 import { formatDate, formatWhen, todayISO } from '../lib/dates'
 import { humanizeError } from '../lib/errors'
 import { formatPhone, telUrl, whatsAppUrl } from '../lib/phone'
@@ -75,7 +76,7 @@ export function CustomerDetailPage() {
       <Link to="/customers" className="text-sm font-semibold text-brand">All customers</Link>
       <div className="mt-3 flex items-start justify-between gap-3">
         <div>
-          <h1 className="page-title break-words">{customer.name}</h1>
+          <h1 className="page-title break-words">{displayName(customer.name)}</h1>
           <p className="mt-1 tabular-nums">{formatPhone(customer.phoneNormalized)}</p>
         </div>
         <StatusBadge status={customer.status} />
