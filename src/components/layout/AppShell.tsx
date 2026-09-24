@@ -51,7 +51,7 @@ export function AppShell() {
       </aside>
       <div className="min-w-0">
         <OfflineBanner mode={mode} offline={offline} pending={pending} syncing={syncing} onSync={() => void sync()} />
-        <main className={`mx-auto w-full max-w-3xl px-3 pt-3 ${hideNav ? 'pb-6' : 'pb-16'} md:px-8 md:pb-10`}>
+        <main className={`mx-auto w-full max-w-3xl px-3 pt-3 md:px-8 ${hideNav ? 'pb-6 md:pb-10' : 'app-pad md:pb-10'}`}>
           <Outlet />
         </main>
       </div>
@@ -78,7 +78,7 @@ export function AppShell() {
               <NavLink
                 to="/customers/new"
                 aria-label="Add customer"
-                className="flex h-12 flex-col items-center justify-center gap-px text-[10px] leading-none font-semibold text-brand"
+                className={({ isActive }) => `flex h-12 flex-col items-center justify-center gap-px text-[10px] leading-none font-semibold ${isActive ? 'text-brand' : 'text-muted'}`}
               >
                 <Plus className="size-4" aria-hidden="true" />
                 Add

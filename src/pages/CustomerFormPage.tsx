@@ -102,7 +102,12 @@ export function CustomerFormPage() {
           ? await repo.updateCustomer(id, inputOf(value, value.status), { allowDuplicate })
           : await repo.createCustomer(inputOf(value, value.status), { allowDuplicate })
         customerId = created.id
-        if (id && value.followUpDate) await repo.scheduleFollowUp(created.id, { date: value.followUpDate, time: value.followUpTime })
+        const openFollowUp = repo.snapshot()?.followUps.some((item) => item.customerId === created.id && item.status === 'SCHEDULED')
+        if (value.followUpDate) {
+          if (id) await repo.scheduleFollowUp(created.id, { date: value.followUpDate, time: value.followUpTime })
+        } else if (id && openFollowUp) {
+          await repo.completeFollowUp(created.id)
+        }
       }
       const syncedLater = repo.pendingCount() > before || repo.isOffline()
       toast.push(syncedLater ? 'Saved on this phone. It will sync when you are back online.' : editing ? 'Customer updated.' : 'Customer added successfully.')

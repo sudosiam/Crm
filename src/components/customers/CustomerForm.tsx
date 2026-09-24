@@ -150,7 +150,7 @@ export function CustomerForm({
         }))}
         onChange={(status) => {
           const next = status as CustomerStatus
-          set({ status: next === 'NEW' && value.followUpDate ? 'FOLLOW_UP' : next })
+          set(next === 'NEW' ? { status: 'NEW', followUpDate: '' } : { status: next })
         }}
       />
       {showFollowUp ? (
@@ -257,17 +257,19 @@ function DateBlock({
   onDate: (value: string) => void
   onTime: (value: string) => void
 }) {
-  const preset = dates.find((item) => item.value === date)?.value ?? (date ? 'custom' : '')
+  const known = dates.some((item) => item.value === date)
   return (
     <div className="space-y-3">
       <SelectField
         label={label}
-        value={preset}
+        value={known ? date : date ? 'custom' : ''}
         emptyLabel="No date"
-        options={[...dates.map((item) => ({ value: item.value, label: item.label })), { value: 'custom', label: 'Choose a date' }]}
+        options={[
+          ...dates.map((item) => ({ value: item.value, label: item.label })),
+          ...(date && !known ? [{ value: 'custom', label: 'Custom date' }] : []),
+        ]}
         onChange={(next) => {
-          if (next === 'custom') return
-          onDate(next)
+          if (next !== 'custom') onDate(next)
         }}
       />
       <div className="grid grid-cols-2 gap-2">

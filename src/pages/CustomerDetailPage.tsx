@@ -169,13 +169,18 @@ export function CustomerDetailPage() {
       <Sheet open={sheet === 'status'} title="Change status" onClose={() => setSheet(null)}>
         <SelectField
           label="Status"
-          value={customer.status === 'SOLD' || customer.status === 'LOST' ? 'FOLLOW_UP' : customer.status}
+          value={customer.status}
           options={[
             { value: 'NEW', label: 'New' },
             { value: 'FOLLOW_UP', label: 'Follow-up' },
             { value: 'TEST_RIDE', label: 'Test ride' },
+            ...(customer.status === 'SOLD' ? [{ value: 'SOLD', label: 'Sold / Delivered' }] : []),
+            ...(customer.status === 'LOST' ? [{ value: 'LOST', label: 'Lost' }] : []),
           ]}
-          onChange={(status) => void run(() => repo.updateCustomer(customer.id, { status: status as CustomerStatus }).then(() => undefined), 'Status updated')}
+          onChange={(status) => {
+            if (status === customer.status || status === 'SOLD' || status === 'LOST') return
+            void run(() => repo.updateCustomer(customer.id, { status: status as CustomerStatus }).then(() => undefined), 'Status updated')
+          }}
         />
       </Sheet>
       <Sheet open={sheet === 'lost'} title="Mark lost" onClose={() => setSheet(null)}>

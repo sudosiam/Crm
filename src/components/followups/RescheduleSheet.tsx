@@ -33,7 +33,10 @@ export function RescheduleSheet({
         <SelectField
           label="When"
           value={dates.some((item) => item.value === date) ? date : 'custom'}
-          options={[...dates.map((item) => ({ value: item.value, label: item.label })), { value: 'custom', label: 'Choose a date' }]}
+          options={[
+            ...dates.map((item) => ({ value: item.value, label: item.label })),
+            ...(dates.some((item) => item.value === date) ? [] : [{ value: 'custom', label: 'Custom date' }]),
+          ]}
           onChange={(next) => {
             if (next !== 'custom') setDate(next)
           }}

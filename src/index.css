@@ -190,6 +190,10 @@ textarea {
     background: var(--brand);
     color: var(--brand-ink);
   }
+
+  .app-pad {
+    padding-bottom: calc(3.25rem + env(safe-area-inset-bottom));
+  }
 }
 
 .status-new { background: #fff6dd; color: #8a5a00; }
@@ -203,6 +207,16 @@ html.dark .status-follow { background: #1c2d4d; color: #c9dbff; }
 html.dark .status-ride { background: #32244a; color: #e4d4ff; }
 html.dark .status-sold { background: #143224; color: #b6f0cc; }
 html.dark .status-lost { background: #4a1d1d; color: #ffc9c9; }
+
+.toast-stack {
+  bottom: calc(3.25rem + env(safe-area-inset-bottom));
+}
+
+@media (min-width: 768px) {
+  .toast-stack {
+    bottom: 1.5rem;
+  }
+}
 
 .scroll-row {
   display: flex;
