@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { messageTemplates } from '../../lib/business'
 import { whatsAppUrl } from '../../lib/phone'
+import { SelectField } from '../ui/SelectField'
 import { Sheet } from '../ui/Sheet'
 
 export function WhatsAppSheet({
@@ -35,25 +36,21 @@ export function WhatsAppSheet({
   return (
     <Sheet open={open} title="WhatsApp" onClose={onClose}>
       <p className="mb-3 text-sm text-muted">Edit the message, then open WhatsApp. Nothing is sent until you tap send there.</p>
-      <div className="mb-3 flex flex-wrap gap-2">
-        {templates.map((template) => (
-          <button
-            key={template.id}
-            type="button"
-            className="chip"
-            aria-pressed={templateId === template.id}
-            onClick={() => {
-              setTemplateId(template.id)
-              const extra = template.id === 'review' && reviewUrl ? `\n${reviewUrl}` : ''
-              setMessage(`${template.body}${extra}`)
-            }}
-          >
-            {template.label}
-          </button>
-        ))}
+      <div className="mb-3">
+        <SelectField
+          label="Message"
+          value={templateId}
+          options={templates.map((template) => ({ value: template.id, label: template.label }))}
+          onChange={(id) => {
+            const template = templates.find((item) => item.id === id) ?? templates[0]
+            setTemplateId(template.id)
+            const extra = template.id === 'review' && reviewUrl ? `\n${reviewUrl}` : ''
+            setMessage(`${template.body}${extra}`)
+          }}
+        />
       </div>
       <label className="block">
-        <span className="mb-1 block text-sm font-semibold">Message</span>
+        <span className="mb-1 block text-sm font-semibold">Edit before sending</span>
         <textarea className="field min-h-36" value={message} onChange={(event) => setMessage(event.target.value)} />
       </label>
       {href ? (

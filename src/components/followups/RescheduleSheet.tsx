@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { addDays, todayISO } from '../../lib/dates'
 import type { Customer } from '../../lib/types'
+import { SelectField } from '../ui/SelectField'
 import { Sheet } from '../ui/Sheet'
 
 export function RescheduleSheet({
@@ -28,12 +29,15 @@ export function RescheduleSheet({
   ]
   return (
     <Sheet open={Boolean(customer)} title="Reschedule" onClose={onClose}>
-      <div className="mb-3 flex gap-2 overflow-x-auto">
-        {dates.map((item) => (
-          <button key={item.label} type="button" className="chip" aria-pressed={date === item.value} onClick={() => setDate(item.value)}>
-            {item.label}
-          </button>
-        ))}
+      <div className="mb-3">
+        <SelectField
+          label="When"
+          value={dates.some((item) => item.value === date) ? date : 'custom'}
+          options={[...dates.map((item) => ({ value: item.value, label: item.label })), { value: 'custom', label: 'Choose a date' }]}
+          onChange={(next) => {
+            if (next !== 'custom') setDate(next)
+          }}
+        />
       </div>
       <div className="grid grid-cols-2 gap-2">
         <input className="field" type="date" value={date} onChange={(event) => setDate(event.target.value)} aria-label="Follow-up date" />

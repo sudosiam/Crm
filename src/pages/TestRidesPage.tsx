@@ -41,7 +41,7 @@ export function TestRidesPage() {
   if (loading) return <LoadingState label="Loading test rides…" />
   return (
     <div>
-      <h1 className="font-display text-4xl">Test rides</h1>
+      <h1 className="page-title">Test rides</h1>
       <Section title="Today" empty="No test rides scheduled." rides={todayRides} name={name} today={today} onUpdate={update} />
       <Section title="Upcoming" empty="No upcoming test rides." rides={upcoming} name={name} today={today} onUpdate={update} />
       <Section title="Earlier" empty="No earlier test rides." rides={past} name={name} today={today} />
@@ -66,12 +66,12 @@ function Section({
 }) {
   return (
     <section className="mt-6">
-      <h2 className="font-display text-2xl">{title}</h2>
+      <h2 className="section-title">{title}</h2>
       {rides.length === 0 ? <div className="mt-3"><EmptyState title={empty} /></div> : (
         <div className="mt-3 space-y-3">
           {rides.map((ride) => (
-            <article key={ride.id} className="card p-4">
-              <Link to={`/customers/${ride.customerId}`} className="text-lg font-semibold">{name(ride.customerId)}</Link>
+            <article key={ride.id} className="card p-3.5">
+              <Link to={`/customers/${ride.customerId}`} className="font-semibold">{name(ride.customerId)}</Link>
               <p className="text-muted">{ride.model || 'Model not set'}</p>
               <p className="mt-1 font-semibold">{formatWhen(ride.scheduledDate, ride.scheduledTime, today)} · {ride.status === 'SCHEDULED' ? 'Scheduled' : ride.status === 'COMPLETED' ? 'Completed' : 'Cancelled'}</p>
               {ride.notes ? <p className="mt-1 text-sm">{ride.notes}</p> : null}

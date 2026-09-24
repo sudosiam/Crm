@@ -11,12 +11,12 @@ const links = [
 export function MorePage() {
   return (
     <div>
-      <h1 className="font-display text-4xl">More</h1>
-      <div className="mt-4 space-y-3">
+      <h1 className="page-title">More</h1>
+      <div className="mt-3 overflow-hidden rounded-2xl border border-line bg-surface">
         {links.map((link) => (
-          <Link key={link.to} to={link.to} className="card flex items-center justify-between p-4">
+          <Link key={link.to} to={link.to} className="flex items-center justify-between border-b border-line p-3.5 last:border-b-0">
             <span>
-              <span className="block text-lg font-semibold">{link.label}</span>
+              <span className="block font-semibold">{link.label}</span>
               <span className="text-sm text-muted">{link.detail}</span>
             </span>
             <ChevronRight className="size-5 text-muted" aria-hidden="true" />

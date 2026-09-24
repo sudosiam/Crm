@@ -12,7 +12,7 @@ export function ForgotPage() {
 
   return (
     <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col justify-center px-5">
-      <h1 className="font-display text-4xl">Reset password</h1>
+      <h1 className="page-title">Reset password</h1>
       <p className="mt-2 text-muted">We will email a reset link if this address has an account.</p>
       <form
         className="mt-6 space-y-4"

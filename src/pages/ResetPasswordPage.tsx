@@ -13,7 +13,7 @@ export function ResetPasswordPage() {
 
   return (
     <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col justify-center px-5">
-      <h1 className="font-display text-4xl">Choose a new password</h1>
+      <h1 className="page-title">Choose a new password</h1>
       {recovery ? (
         <form
           className="mt-6 space-y-4"

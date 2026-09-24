@@ -15,16 +15,16 @@ export function OfflineBanner({
 }) {
   if (mode === 'demo') {
     return (
-      <div className="bg-nav px-4 py-2 text-center text-sm text-brand-ink">
-        Demo mode · customer data stays on this phone
+      <div className="bg-nav px-4 py-1.5 text-center text-xs text-brand-ink">
+        Demo · data stays on this phone
       </div>
     )
   }
   if (!offline && pending === 0 && !syncing) return null
   return (
-    <div className="flex items-center justify-between gap-3 bg-nav px-4 py-2 text-sm text-brand-ink">
-      <p className="flex items-center gap-2">
-        <WifiOff className="size-4" aria-hidden="true" />
+    <div className="flex items-center justify-between gap-3 bg-nav px-4 py-2 text-xs leading-snug text-brand-ink">
+      <p className="flex items-start gap-2">
+        <WifiOff className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
         {syncing
           ? 'Syncing…'
           : offline
@@ -34,7 +34,7 @@ export function OfflineBanner({
             : `${pending} change${pending === 1 ? '' : 's'} waiting to sync.`}
       </p>
       {!offline && pending > 0 ? (
-        <button type="button" className="font-semibold underline" onClick={onSync}>
+        <button type="button" className="shrink-0 font-semibold underline" onClick={onSync}>
           Sync
         </button>
       ) : null}

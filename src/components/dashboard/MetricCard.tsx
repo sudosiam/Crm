@@ -11,22 +11,23 @@ export function MetricCard({
   tone?: 'default' | 'warning'
   onClick?: () => void
 }) {
+  const alert = tone === 'warning' && value > 0
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`card px-3 py-3 text-left ${tone === 'warning' && value > 0 ? 'ring-2 ring-warning' : ''}`}
+      className={`card min-h-16 px-2.5 py-2.5 text-left ${alert ? 'border-warning' : ''}`}
     >
-      <span className={`block font-display text-3xl leading-none ${tone === 'warning' && value > 0 ? 'text-warning' : ''}`}>{value}</span>
-      <span className="mt-1 block text-sm text-muted">{label}</span>
+      <span className={`block text-2xl font-semibold leading-none tracking-tight tabular-nums ${alert ? 'text-warning' : ''}`}>{value}</span>
+      <span className="mt-1 block text-[11px] leading-tight font-medium text-muted">{label}</span>
     </button>
   )
 }
 
 export function SectionTitle({ children, action }: { children: ReactNode; action?: ReactNode }) {
   return (
-    <div className="mb-3 flex items-end justify-between gap-3">
-      <h2 className="font-display text-2xl">{children}</h2>
+    <div className="mb-2 flex items-center justify-between gap-3">
+      <h2 className="section-title">{children}</h2>
       {action}
     </div>
   )

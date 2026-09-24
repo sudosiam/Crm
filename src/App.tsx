@@ -20,7 +20,7 @@ import { TestRidesPage } from './pages/TestRidesPage'
 function Gate({ children }: { children: ReactNode }) {
   const { ready, user, workspace, configError } = useApp()
   if (configError) {
-    return <main className="mx-auto max-w-md px-5 py-16"><h1 className="font-display text-3xl">BPH cannot start</h1><p className="mt-3">{configError}</p></main>
+    return <main className="mx-auto max-w-md px-5 py-16"><h1 className="page-title">BPH cannot start</h1><p className="mt-3">{configError}</p></main>
   }
   if (!ready) return <main className="grid min-h-dvh place-items-center"><LoadingState label="Loading BPH…" /></main>
   if (!user) return <Navigate to="/login" replace />

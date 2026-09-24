@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { FollowUpCard } from '../components/followups/FollowUpCard'
+import { SelectField } from '../components/ui/SelectField'
 import { RescheduleSheet } from '../components/followups/RescheduleSheet'
 import { WhatsAppSheet } from '../components/whatsapp/WhatsAppSheet'
 import { EmptyState } from '../components/ui/EmptyState'
@@ -53,13 +54,19 @@ export function FollowUpsPage() {
 
   return (
     <div>
-      <h1 className="font-display text-4xl">Follow-ups</h1>
-      <div className="mt-4 flex gap-2 overflow-x-auto">
-        {tabs.map((item) => (
-          <button key={item} type="button" className="chip capitalize" aria-pressed={tab === item} onClick={() => setParams({ tab: item })}>
-            {item}
-          </button>
-        ))}
+      <h1 className="page-title">Follow-ups</h1>
+      <div className="mt-3">
+        <SelectField
+          label="Show"
+          value={tab}
+          options={[
+            { value: 'today', label: 'Today' },
+            { value: 'upcoming', label: 'Upcoming' },
+            { value: 'overdue', label: 'Overdue' },
+            { value: 'completed', label: 'Completed' },
+          ]}
+          onChange={(next) => setParams({ tab: next })}
+        />
       </div>
       {loading ? <LoadingState label="Loading follow-ups…" /> : null}
       {!loading && visible.length === 0 ? <div className="mt-4"><EmptyState title={empty} /></div> : (

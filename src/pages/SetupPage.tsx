@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import { BPH, DEMO_JOIN_CODE } from '../lib/business'
+import { SelectField } from '../components/ui/SelectField'
 import { useApp } from '../context/AppContext'
 import { humanizeError } from '../lib/errors'
 import type { BusinessInput } from '../lib/types'
@@ -27,13 +28,20 @@ export function SetupPage() {
   if (ready && workspace) return <Navigate to="/" replace />
 
   return (
-    <main className="mx-auto min-h-dvh w-full max-w-lg px-5 py-8">
-      <p className="font-display text-4xl text-brand">BPH</p>
-      <h1 className="mt-2 font-display text-3xl">Set up the showroom</h1>
-      <p className="mt-2 text-muted">The owner creates BISWAJIT POWER HUB once. Everyone else joins with the team code.</p>
-      <div className="mt-5 flex gap-2">
-        <button type="button" className="chip" aria-pressed={tab === 'create'} onClick={() => setTab('create')}>Set up BPH</button>
-        <button type="button" className="chip" aria-pressed={tab === 'join'} onClick={() => setTab('join')}>I have a team code</button>
+    <main className="mx-auto min-h-dvh w-full max-w-lg px-4 py-6">
+      <p className="text-sm font-semibold tracking-[0.18em] text-brand">BPH</p>
+      <h1 className="page-title mt-1">Set up the showroom</h1>
+      <p className="mt-2 text-sm text-muted">The owner creates BISWAJIT POWER HUB once. Everyone else joins with the team code.</p>
+      <div className="mt-4">
+        <SelectField
+          label="How are you joining?"
+          value={tab}
+          options={[
+            { value: 'create', label: 'Set up BPH' },
+            { value: 'join', label: 'I have a team code' },
+          ]}
+          onChange={(next) => setTab(next as 'create' | 'join')}
+        />
       </div>
       {tab === 'create' ? (
         <form

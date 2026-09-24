@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { SelectField } from '../ui/SelectField'
 import { STATUS_META } from '../../lib/business'
 import { LEAD_SOURCES, LOST_REASONS } from '../../lib/types'
 import { addDays, todayISO } from '../../lib/dates'
@@ -77,32 +78,6 @@ export function customerToForm(customer: Customer): CustomerFormValue {
   }
 }
 
-function ChipRow({
-  label,
-  options,
-  value,
-  onChange,
-}: {
-  label: string
-  options: string[]
-  value: string
-  onChange: (value: string) => void
-}) {
-  return (
-    <fieldset>
-      <legend className="mb-2 text-sm font-semibold">{label}</legend>
-      <div className="flex gap-2 overflow-x-auto pb-1">
-        <button type="button" className="chip" aria-pressed={value === ''} onClick={() => onChange('')}>None</button>
-        {options.map((option) => (
-          <button key={option} type="button" className="chip" aria-pressed={value === option} onClick={() => onChange(option)}>
-            {option}
-          </button>
-        ))}
-      </div>
-    </fieldset>
-  )
-}
-
 export function CustomerForm({
   value,
   products,
@@ -152,24 +127,32 @@ export function CustomerForm({
         <span className="mb-1 block text-sm font-semibold">Phone</span>
         <input className="field" value={value.phone} onChange={(event) => set({ phone: event.target.value })} inputMode="tel" autoComplete="tel" required />
       </label>
-      <ChipRow label="Model" options={models.map((product) => product.name)} value={value.model} onChange={(model) => set({ model })} />
-      <ChipRow label="Battery" options={batteries.map((product) => product.name)} value={value.battery} onChange={(battery) => set({ battery })} />
-      <fieldset>
-        <legend className="mb-2 text-sm font-semibold">Status</legend>
-        <div className="flex flex-wrap gap-2">
-          {(Object.keys(STATUS_META) as CustomerStatus[]).map((status) => (
-            <button
-              key={status}
-              type="button"
-              className="chip"
-              aria-pressed={value.status === status}
-              onClick={() => set({ status: status === 'NEW' && value.followUpDate ? 'FOLLOW_UP' : status })}
-            >
-              {STATUS_META[status].emoji} {STATUS_META[status].label}
-            </button>
-          ))}
-        </div>
-      </fieldset>
+      <SelectField
+        label="Model"
+        value={value.model}
+        emptyLabel="Not set"
+        options={models.map((product) => ({ value: product.name, label: product.name }))}
+        onChange={(model) => set({ model })}
+      />
+      <SelectField
+        label="Battery"
+        value={value.battery}
+        emptyLabel="Not set"
+        options={batteries.map((product) => ({ value: product.name, label: product.name }))}
+        onChange={(battery) => set({ battery })}
+      />
+      <SelectField
+        label="Status"
+        value={value.status}
+        options={(Object.keys(STATUS_META) as CustomerStatus[]).map((status) => ({
+          value: status,
+          label: `${STATUS_META[status].emoji} ${STATUS_META[status].label}`,
+        }))}
+        onChange={(status) => {
+          const next = status as CustomerStatus
+          set({ status: next === 'NEW' && value.followUpDate ? 'FOLLOW_UP' : next })
+        }}
+      />
       {showFollowUp ? (
         <DateBlock
           label="Follow-up"
@@ -203,34 +186,31 @@ export function CustomerForm({
         </div>
       ) : null}
       {showLost ? (
-        <fieldset>
-          <legend className="mb-2 text-sm font-semibold">Lost reason</legend>
-          <div className="flex flex-wrap gap-2">
-            {LOST_REASONS.map((reason) => (
-              <button key={reason} type="button" className="chip" aria-pressed={value.lostReason === reason} onClick={() => set({ lostReason: reason })}>
-                {reason}
-              </button>
-            ))}
-          </div>
+        <div className="space-y-3">
+          <SelectField
+            label="Lost reason"
+            value={value.lostReason}
+            emptyLabel="Choose a reason"
+            options={LOST_REASONS.map((reason) => ({ value: reason, label: reason }))}
+            onChange={(lostReason) => set({ lostReason })}
+          />
           {value.lostReason === 'Other' ? (
-            <input className="field mt-3" value={value.lostNote} onChange={(event) => set({ lostNote: event.target.value })} placeholder="Short reason" />
+            <input className="field" value={value.lostNote} onChange={(event) => set({ lostNote: event.target.value })} placeholder="Short reason" aria-label="Other lost reason" />
           ) : null}
-        </fieldset>
+        </div>
       ) : null}
       <button type="button" className="text-sm font-semibold text-brand" onClick={() => setMore((open) => !open)} aria-expanded={more}>
         {more ? 'Hide extra details' : 'Source, budget, notes'}
       </button>
       {more ? (
         <div className="space-y-4">
-          <label className="block">
-            <span className="mb-1 block text-sm font-semibold">Source</span>
-            <select className="field" value={value.source} onChange={(event) => set({ source: event.target.value })}>
-              <option value="">Not set</option>
-              {LEAD_SOURCES.map((source) => (
-                <option key={source} value={source}>{source}</option>
-              ))}
-            </select>
-          </label>
+          <SelectField
+            label="Source"
+            value={value.source}
+            emptyLabel="Not set"
+            options={LEAD_SOURCES.map((source) => ({ value: source, label: source }))}
+            onChange={(source) => set({ source })}
+          />
           {value.source === 'Other' ? (
             <input className="field" value={value.sourceOther} onChange={(event) => set({ sourceOther: event.target.value })} placeholder="Where did they hear about BPH?" />
           ) : null}
@@ -246,18 +226,16 @@ export function CustomerForm({
             <span className="mb-1 block text-sm font-semibold">Enquiry date</span>
             <input className="field" type="date" value={value.enquiryDate} onChange={(event) => set({ enquiryDate: event.target.value })} />
           </label>
-          <label className="block">
-            <span className="mb-1 block text-sm font-semibold">Assigned salesperson</span>
-            <select className="field" value={value.assignedTo} onChange={(event) => set({ assignedTo: event.target.value })}>
-              <option value="">Unassigned</option>
-              {members.map((member) => (
-                <option key={member.userId} value={member.userId}>{member.fullName}</option>
-              ))}
-            </select>
-          </label>
+          <SelectField
+            label="Assigned salesperson"
+            value={value.assignedTo}
+            emptyLabel="Unassigned"
+            options={members.map((member) => ({ value: member.userId, label: member.fullName }))}
+            onChange={(assignedTo) => set({ assignedTo })}
+          />
         </div>
       ) : null}
-      <button type="submit" className="btn btn-primary w-full" disabled={submitting}>
+      <button type="submit" className="btn btn-primary sticky bottom-3 z-10 w-full" disabled={submitting}>
         {submitting ? 'Saving customer…' : submitLabel}
       </button>
     </form>
@@ -279,21 +257,23 @@ function DateBlock({
   onDate: (value: string) => void
   onTime: (value: string) => void
 }) {
+  const preset = dates.find((item) => item.value === date)?.value ?? (date ? 'custom' : '')
   return (
-    <fieldset>
-      <legend className="mb-2 text-sm font-semibold">{label}</legend>
-      <div className="mb-2 flex gap-2 overflow-x-auto">
-        <button type="button" className="chip" aria-pressed={date === ''} onClick={() => onDate('')}>No date</button>
-        {dates.map((item) => (
-          <button key={item.label} type="button" className="chip" aria-pressed={date === item.value} onClick={() => onDate(item.value)}>
-            {item.label}
-          </button>
-        ))}
-      </div>
+    <div className="space-y-3">
+      <SelectField
+        label={label}
+        value={preset}
+        emptyLabel="No date"
+        options={[...dates.map((item) => ({ value: item.value, label: item.label })), { value: 'custom', label: 'Choose a date' }]}
+        onChange={(next) => {
+          if (next === 'custom') return
+          onDate(next)
+        }}
+      />
       <div className="grid grid-cols-2 gap-2">
         <input className="field" type="date" value={date} onChange={(event) => onDate(event.target.value)} aria-label={`${label} date`} />
         <input className="field" type="time" value={time} onChange={(event) => onTime(event.target.value)} aria-label={`${label} time`} />
       </div>
-    </fieldset>
+    </div>
   )
 }

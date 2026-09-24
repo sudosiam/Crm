@@ -39,12 +39,12 @@ export function LoginPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col justify-center px-5 py-10">
-      <p className="font-display text-5xl text-brand">BPH</p>
-      <h1 className="mt-2 font-display text-3xl">{BPH.name}</h1>
-      <p className="mt-1 text-muted">{BPH.tagline}</p>
+    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col justify-center px-4 py-8">
+      <p className="text-sm font-semibold tracking-[0.18em] text-brand">BPH</p>
+      <h1 className="page-title mt-1">{BPH.name}</h1>
+      <p className="mt-1 text-sm text-muted">{BPH.tagline}</p>
       <form
-        className="card mt-6 space-y-4 p-5"
+        className="card mt-5 space-y-3 p-4"
         onSubmit={(event) => {
           event.preventDefault()
           void submit()
@@ -70,7 +70,7 @@ export function LoginPage() {
         <button className="btn btn-primary w-full" type="submit" disabled={busy}>
           {busy ? 'Please wait…' : modeForm === 'in' ? 'Sign in' : 'Create account'}
         </button>
-        <div className="flex justify-between text-sm">
+        <div className="flex flex-col gap-3 text-sm sm:flex-row sm:justify-between">
           <button type="button" className="font-semibold text-brand" onClick={() => setModeForm(modeForm === 'in' ? 'up' : 'in')}>
             {modeForm === 'in' ? 'Create account' : 'Have an account? Sign in'}
           </button>
@@ -78,14 +78,14 @@ export function LoginPage() {
         </div>
       </form>
       {mode === 'demo' ? (
-        <div className="mt-4 rounded-2xl bg-brand-soft p-4 text-sm">
+        <div className="mt-4 rounded-xl bg-brand-soft p-3 text-sm">
           <p className="font-semibold">Demo on this phone</p>
           <p className="mt-1">Owner: {DEMO_OWNER_EMAIL} · {DEMO_OWNER_PASSWORD}</p>
           <p>Staff: {DEMO_STAFF_EMAIL} · {DEMO_STAFF_PASSWORD}</p>
           <p className="mt-1 text-muted">Team code starts as BPHDEMO1. Nothing here is a real customer.</p>
         </div>
       ) : null}
-      <footer className="mt-8 text-sm text-muted">
+      <footer className="mt-6 text-xs leading-relaxed text-muted">
         <p>{BPH.address}</p>
         <p className="mt-1">{BPH.businessHours}</p>
         <p className="mt-1">{BPH.phone}</p>

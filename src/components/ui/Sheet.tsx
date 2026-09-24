@@ -17,20 +17,26 @@ export function Sheet({
       if (event.key === 'Escape') onClose()
     }
     window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
+    const previous = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = previous
+    }
   }, [open, onClose])
   if (!open) return null
   return (
-    <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/45 md:items-center" role="presentation" onClick={onClose}>
+    <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/40 md:items-center md:p-4" role="presentation" onClick={onClose}>
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="sheet-title"
-        className="max-h-[88dvh] w-full max-w-lg overflow-y-auto rounded-t-3xl bg-surface p-5 md:rounded-3xl"
+        className="max-h-[88dvh] w-full max-w-lg overflow-y-auto rounded-t-2xl bg-surface px-4 pt-3 pb-[max(1rem,env(safe-area-inset-bottom))] md:rounded-2xl md:p-5"
         onClick={(event) => event.stopPropagation()}
       >
-        <div className="mb-4 flex items-center justify-between gap-3">
-          <h2 id="sheet-title" className="font-display text-2xl">{title}</h2>
+        <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-line md:hidden" aria-hidden="true" />
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <h2 id="sheet-title" className="text-lg font-semibold tracking-tight">{title}</h2>
           <button type="button" className="btn btn-ghost min-h-10 px-3" onClick={onClose}>Close</button>
         </div>
         {children}

@@ -64,22 +64,21 @@ export function DashboardPage() {
   const name = actor?.fullName || user?.fullName || ''
   return (
     <div>
-      <p className="text-sm font-semibold text-brand">{greeting()}</p>
-      <h1 className="font-display text-4xl">{name ? name.split(' ')[0] : 'Today'}</h1>
-      <p className="mt-1 text-muted">What needs a call or a visit.</p>
+      <h1 className="page-title">{greeting()}{name ? `, ${name.split(' ')[0]}` : ''}</h1>
+      <p className="mt-1 text-sm text-muted">Calls and visits for today.</p>
       {loading && !data ? <LoadingState label="Loading today's work…" /> : null}
       {error ? <ErrorState message={error} onRetry={() => void load()} /> : null}
       {data ? (
         <>
-          <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
+          <div className="mt-4 grid grid-cols-3 gap-2">
             <MetricCard label="Follow-ups today" value={data.counts.followUpsToday} onClick={() => navigate('/follow-ups?tab=today')} />
             <MetricCard label="Overdue" value={data.counts.overdue} tone="warning" onClick={() => navigate('/follow-ups?tab=overdue')} />
             <MetricCard label="Test rides today" value={data.counts.testRidesToday} onClick={() => navigate('/test-rides')} />
-            <MetricCard label="New leads this month" value={data.counts.newLeadsMonth} onClick={() => navigate('/customers')} />
+            <MetricCard label="New this month" value={data.counts.newLeadsMonth} onClick={() => navigate('/customers')} />
             <MetricCard label="Sold this month" value={data.counts.soldMonth} onClick={() => navigate('/sales')} />
             <MetricCard label="Lost this month" value={data.counts.lostMonth} onClick={() => navigate('/sales?tab=lost')} />
           </div>
-          <div className="mt-8">
+          <div className="mt-6">
             <SectionTitle>Overdue</SectionTitle>
             {data.overdue.length === 0 ? <EmptyState title="No overdue follow-ups." /> : (
               <div className="space-y-3">
@@ -89,7 +88,7 @@ export function DashboardPage() {
               </div>
             )}
           </div>
-          <div className="mt-8">
+          <div className="mt-6">
             <SectionTitle>Follow up today</SectionTitle>
             {data.followUpsToday.length === 0 ? <EmptyState title="No follow-ups today 🎉" /> : (
               <div className="space-y-3">
@@ -99,15 +98,15 @@ export function DashboardPage() {
               </div>
             )}
           </div>
-          <div className="mt-8">
+          <div className="mt-6">
             <SectionTitle>Test rides today</SectionTitle>
             {data.testRidesToday.length === 0 ? <EmptyState title="No test rides scheduled." /> : (
               <div className="space-y-3">
                 {data.testRidesToday.map((ride) => {
                   const person = workspace?.customers.find((item) => item.id === ride.customerId)
                   return (
-                    <Link key={ride.id} to={`/customers/${ride.customerId}`} className="card block p-4">
-                      <p className="text-lg font-semibold">{person?.name ?? 'Customer'}</p>
+                    <Link key={ride.id} to={`/customers/${ride.customerId}`} className="card block p-3.5">
+                      <p className="font-semibold">{person?.name ?? 'Customer'}</p>
                       <p className="text-muted">{ride.model || person?.model || 'Model not set'}</p>
                       <p className="mt-1 font-semibold">{formatWhen(ride.scheduledDate, ride.scheduledTime, today)}</p>
                     </Link>

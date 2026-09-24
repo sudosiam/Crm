@@ -7,6 +7,7 @@ import { StatusBadge } from '../components/ui/StatusBadge'
 import { ConfirmDialog } from '../components/ui/ConfirmDialog'
 import { ErrorState } from '../components/ui/ErrorState'
 import { LoadingState } from '../components/ui/LoadingState'
+import { SelectField } from '../components/ui/SelectField'
 import { Sheet } from '../components/ui/Sheet'
 import { useApp } from '../context/AppContext'
 import { useToast } from '../context/ToastContext'
@@ -74,8 +75,8 @@ export function CustomerDetailPage() {
       <Link to="/customers" className="text-sm font-semibold text-brand">All customers</Link>
       <div className="mt-3 flex items-start justify-between gap-3">
         <div>
-          <h1 className="font-display text-4xl">{customer.name}</h1>
-          <p className="mt-1 text-lg tabular-nums">{formatPhone(customer.phoneNormalized)}</p>
+          <h1 className="page-title break-words">{customer.name}</h1>
+          <p className="mt-1 tabular-nums">{formatPhone(customer.phoneNormalized)}</p>
         </div>
         <StatusBadge status={customer.status} />
       </div>
@@ -137,7 +138,7 @@ export function CustomerDetailPage() {
         <button type="button" className="btn btn-ghost mt-3 w-full" onClick={() => setConfirmDelete(true)}>Delete customer</button>
       ) : null}
       <section className="mt-6">
-        <h2 className="font-display text-2xl">History</h2>
+        <h2 className="section-title">History</h2>
         {bundle.activities.length === 0 ? <p className="mt-2 text-muted">No history yet.</p> : (
           <ol className="mt-3 space-y-3">
             {bundle.activities.map((activity) => (
@@ -166,20 +167,24 @@ export function CustomerDetailPage() {
         }}
       />
       <Sheet open={sheet === 'status'} title="Change status" onClose={() => setSheet(null)}>
-        <div className="grid gap-2">
-          {(['NEW', 'FOLLOW_UP', 'TEST_RIDE'] as CustomerStatus[]).map((status) => (
-            <button key={status} type="button" className="btn btn-secondary" onClick={() => void run(() => repo.updateCustomer(customer.id, { status }).then(() => undefined), 'Status updated')}>
-              {status === 'NEW' ? 'New' : status === 'FOLLOW_UP' ? 'Follow-up' : 'Test ride'}
-            </button>
-          ))}
-        </div>
+        <SelectField
+          label="Status"
+          value={customer.status === 'SOLD' || customer.status === 'LOST' ? 'FOLLOW_UP' : customer.status}
+          options={[
+            { value: 'NEW', label: 'New' },
+            { value: 'FOLLOW_UP', label: 'Follow-up' },
+            { value: 'TEST_RIDE', label: 'Test ride' },
+          ]}
+          onChange={(status) => void run(() => repo.updateCustomer(customer.id, { status: status as CustomerStatus }).then(() => undefined), 'Status updated')}
+        />
       </Sheet>
       <Sheet open={sheet === 'lost'} title="Mark lost" onClose={() => setSheet(null)}>
-        <div className="flex flex-wrap gap-2">
-          {LOST_REASONS.map((reason) => (
-            <button key={reason} type="button" className="chip" aria-pressed={lostReason === reason} onClick={() => setLostReason(reason)}>{reason}</button>
-          ))}
-        </div>
+        <SelectField
+          label="Reason"
+          value={lostReason}
+          options={LOST_REASONS.map((reason) => ({ value: reason, label: reason }))}
+          onChange={setLostReason}
+        />
         <button type="button" className="btn btn-primary mt-4 w-full" onClick={() => void run(() => repo.markLost(customer.id, lostReason), 'Marked lost')}>Save</button>
       </Sheet>
       <Sheet open={sheet === 'sale'} title="Mark sold" onClose={() => setSheet(null)}>

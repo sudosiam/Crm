@@ -46,9 +46,11 @@ export function CustomersPage() {
 
   return (
     <div>
-      <h1 className="font-display text-4xl">Customers</h1>
-      <p className="mt-1 text-sm text-muted">{total} {total === 1 ? 'customer' : 'customers'}</p>
-      <div className="mt-4 space-y-3">
+      <div className="flex items-baseline justify-between gap-3">
+        <h1 className="page-title">Customers</h1>
+        <p className="text-sm text-muted">{total}</p>
+      </div>
+      <div className="sticky top-0 z-20 -mx-4 mt-3 space-y-2 bg-bg/95 px-4 py-2 backdrop-blur">
         <SearchBar value={search} onChange={(value) => { setSearch(value); setPage(1) }} />
         <FilterChips value={filter} onChange={(value) => { setFilter(value); setPage(1) }} />
       </div>

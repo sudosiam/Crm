@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ConfirmDialog } from '../components/ui/ConfirmDialog'
+import { SelectField } from '../components/ui/SelectField'
 import { useApp } from '../context/AppContext'
 import { useTheme } from '../context/ThemeContext'
 import { useToast } from '../context/ToastContext'
@@ -49,22 +50,26 @@ export function SettingsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="font-display text-4xl">Settings</h1>
+      <h1 className="page-title">Settings</h1>
       <section className="card p-4">
         <h2 className="font-semibold">Your name</h2>
-        <div className="mt-3 flex gap-2">
+        <div className="mt-3 flex flex-col gap-2 sm:flex-row">
           <input className="field" value={name} onChange={(event) => setName(event.target.value)} />
-          <button type="button" className="btn btn-secondary" onClick={() => void save(() => repo.updateMyProfile(name, me?.phone ?? ''), 'Name saved')}>Save</button>
+          <button type="button" className="btn btn-secondary sm:shrink-0" onClick={() => void save(() => repo.updateMyProfile(name, me?.phone ?? ''), 'Name saved')}>Save</button>
         </div>
         <p className="mt-2 text-sm text-muted">{user?.email}</p>
       </section>
       <section className="card p-4">
-        <h2 className="font-semibold">Theme</h2>
-        <div className="mt-3 flex gap-2">
-          {(['system', 'light', 'dark'] as const).map((item) => (
-            <button key={item} type="button" className="chip capitalize" aria-pressed={preference === item} onClick={() => setPreference(item)}>{item}</button>
-          ))}
-        </div>
+        <SelectField
+            label="Theme"
+            value={preference}
+            options={[
+              { value: 'system', label: 'System' },
+              { value: 'light', label: 'Light' },
+              { value: 'dark', label: 'Dark' },
+            ]}
+            onChange={(next) => setPreference(next as 'system' | 'light' | 'dark')}
+        />
       </section>
       <section className="card p-4">
         <h2 className="font-semibold">Reminders</h2>
@@ -135,9 +140,9 @@ export function SettingsPage() {
               <h3 className="text-sm font-semibold uppercase tracking-wide text-muted">{kind === 'model' ? 'Models' : 'Batteries'}</h3>
               <ul className="mt-2 space-y-2">
                 {workspace.products.filter((product) => product.kind === kind).sort((a, b) => a.sortOrder - b.sortOrder).map((product) => (
-                  <li key={product.id} className="flex items-center justify-between gap-2">
-                    <span className={product.active ? '' : 'text-muted line-through'}>{product.name}</span>
-                    <span className="flex gap-1">
+                  <li key={product.id} className="rounded-xl border border-line p-2.5">
+                    <span className={product.active ? 'font-medium' : 'text-muted line-through'}>{product.name}</span>
+                    <span className="mt-2 flex flex-wrap gap-1">
                       <button type="button" className="chip" onClick={() => void save(() => repo.moveProduct(product.id, -1), 'Order saved')}>Up</button>
                       <button type="button" className="chip" onClick={() => void save(() => repo.moveProduct(product.id, 1), 'Order saved')}>Down</button>
                       <button type="button" className="chip" onClick={() => void save(() => repo.saveProduct({ id: product.id, kind, name: product.name, active: !product.active }), product.active ? 'Hidden from the form' : 'Shown on the form')}>
@@ -149,7 +154,7 @@ export function SettingsPage() {
               </ul>
             </div>
           ))}
-          <div className="mt-4 flex gap-2">
+          <div className="mt-4 grid grid-cols-[7.5rem_1fr] gap-2">
             <select className="field" value={productKind} onChange={(event) => setProductKind(event.target.value as ProductKind)}>
               <option value="model">Model</option>
               <option value="battery">Battery</option>
@@ -172,17 +177,27 @@ export function SettingsPage() {
         <section className="card p-4">
           <h2 className="font-semibold">Team</h2>
           <p className="mt-2 text-sm">Team code: <span className="font-semibold tracking-wider">{workspace.organization.joinCode}</span></p>
-          <button type="button" className="btn btn-ghost mt-2" onClick={() => void navigator.clipboard.writeText(workspace.organization.joinCode).then(() => toast.push('Team code copied'))}>Copy code</button>
-          <button type="button" className="btn btn-ghost mt-2 ml-2" onClick={() => void save(() => repo.rotateJoinCode(), 'New team code saved')}>New code</button>
+          <div className="mt-2 flex flex-wrap gap-2">
+            <button type="button" className="btn btn-ghost" onClick={() => void navigator.clipboard.writeText(workspace.organization.joinCode).then(() => toast.push('Team code copied'))}>Copy code</button>
+            <button type="button" className="btn btn-ghost" onClick={() => void save(() => repo.rotateJoinCode(), 'New team code saved')}>New code</button>
+          </div>
           <ul className="mt-4 space-y-3">
             {workspace.members.map((member) => (
               <li key={member.id} className="rounded-2xl border border-line p-3">
                 <p className="font-semibold">{member.fullName}</p>
                 <p className="text-sm text-muted">{member.email} · {member.role === 'OWNER' ? 'Owner' : 'Staff'}</p>
                 {member.role === 'STAFF' ? (
-                  <button type="button" className="btn btn-ghost mt-2" onClick={() => void save(() => repo.updateMember(member.id, { canViewAll: !member.canViewAll }), 'Access updated')}>
-                    {member.canViewAll ? 'Sees all leads' : 'Sees assigned leads'}
-                  </button>
+                  <div className="mt-2">
+                    <SelectField
+                      label="Can see"
+                      value={member.canViewAll ? 'all' : 'assigned'}
+                      options={[
+                        { value: 'assigned', label: 'Assigned leads' },
+                        { value: 'all', label: 'All leads' },
+                      ]}
+                      onChange={(next) => void save(() => repo.updateMember(member.id, { canViewAll: next === 'all' }), 'Access updated')}
+                    />
+                  </div>
                 ) : null}
                 {member.userId !== actor.userId ? (
                   <button type="button" className="btn btn-danger mt-2" onClick={() => void save(() => repo.removeMember(member.id), 'Teammate removed')}>Remove</button>
