@@ -1,0 +1,185 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces", Georgia, serif;
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-ink: var(--brand-ink);
+  --color-brand-soft: var(--brand-soft);
+  --color-nav: var(--nav);
+  --color-danger: var(--danger);
+  --color-warning: var(--warning);
+}
+
+:root {
+  --bg: #f3efe6;
+  --surface: #fffdf8;
+  --ink: #17261f;
+  --muted: #5c6d64;
+  --line: #e4dccb;
+  --brand: #0e6a43;
+  --brand-strong: #0b4d31;
+  --brand-ink: #f4fff8;
+  --brand-soft: #e4f6eb;
+  --nav: #10281e;
+  --danger: #9f2d2d;
+  --warning: #9a5416;
+  color-scheme: light;
+}
+
+html.dark {
+  --bg: #0e1512;
+  --surface: #17211c;
+  --ink: #e8f3ec;
+  --muted: #a8b9af;
+  --line: #2c3c34;
+  --brand: #3dbe7a;
+  --brand-strong: #b7f0cf;
+  --brand-ink: #062116;
+  --brand-soft: #173328;
+  --nav: #0a100e;
+  --danger: #ffb4b4;
+  --warning: #f3c48a;
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: #b7e7c8;
+}
+
+@layer components {
+  .field {
+    width: 100%;
+    min-height: 3rem;
+    border-radius: 1rem;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    padding: 0.75rem 0.95rem;
+  }
+
+  .field:focus {
+    border-color: var(--brand);
+    outline: none;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 25%, transparent);
+  }
+
+  .btn {
+    display: inline-flex;
+    min-height: 3rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    border-radius: 999px;
+    padding: 0.65rem 1rem;
+    font-weight: 650;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .btn:disabled {
+    opacity: 0.55;
+  }
+
+  .btn-primary {
+    background: var(--brand);
+    color: var(--brand-ink);
+  }
+
+  .btn-secondary {
+    background: var(--brand-soft);
+    color: var(--brand-strong);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line);
+  }
+
+  .btn-danger {
+    background: color-mix(in srgb, var(--danger) 12%, var(--surface));
+    color: var(--danger);
+  }
+
+  .card {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 1.35rem;
+    box-shadow: 0 1px 2px rgb(23 38 31 / 0.04), 0 12px 32px rgb(23 38 31 / 0.04);
+  }
+
+  .chip {
+    min-height: 2.5rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    padding: 0.4rem 0.85rem;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .chip[aria-pressed='true'],
+  .chip.active {
+    border-color: transparent;
+    background: var(--brand);
+    color: var(--brand-ink);
+  }
+}
+
+.status-new { background: #fff1cc; color: #8a5a00; }
+.status-follow { background: #e5f0ff; color: #1849a9; }
+.status-ride { background: #f3e8ff; color: #6941c6; }
+.status-sold { background: #e5f6eb; color: #087443; }
+.status-lost { background: #fde8e8; color: #b42318; }
+
+html.dark .status-new { background: #3d3114; color: #f8d48a; }
+html.dark .status-follow { background: #1c2d4d; color: #c9dbff; }
+html.dark .status-ride { background: #32244a; color: #e4d4ff; }
+html.dark .status-sold { background: #143224; color: #b6f0cc; }
+html.dark .status-lost { background: #4a1d1d; color: #ffc9c9; }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
