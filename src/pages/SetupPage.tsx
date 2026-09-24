@@ -28,7 +28,7 @@ export function SetupPage() {
   if (ready && workspace) return <Navigate to="/" replace />
 
   return (
-    <main className="mx-auto min-h-dvh w-full max-w-lg px-4 py-6">
+    <main className="mx-auto min-h-dvh w-full max-w-lg overflow-y-auto px-4 py-6">
       <p className="text-sm font-semibold tracking-[0.18em] text-brand">BPH</p>
       <h1 className="page-title mt-1">Set up the showroom</h1>
       <p className="mt-2 text-sm text-muted">The owner creates BISWAJIT POWER HUB once. Everyone else joins with the team code.</p>

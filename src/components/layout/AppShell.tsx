@@ -58,7 +58,11 @@ export function AppShell() {
       {hideNav ? null : (
         <nav
           className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface md:hidden"
-          style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+          style={{
+            paddingBottom: 'env(safe-area-inset-bottom)',
+            paddingLeft: 'env(safe-area-inset-left)',
+            paddingRight: 'env(safe-area-inset-right)',
+          }}
           aria-label="Main"
         >
           <ul className="grid h-12 grid-cols-5">
@@ -67,7 +71,7 @@ export function AppShell() {
                 <NavLink
                   to={link.to}
                   end={link.end}
-                  className={({ isActive }) => `flex h-12 flex-col items-center justify-center gap-px text-[10px] leading-none font-semibold ${isActive ? 'text-brand' : 'text-muted'}`}
+                  className={({ isActive }) => `flex h-12 min-w-0 flex-col items-center justify-center gap-px px-0.5 text-[10px] leading-none font-semibold ${isActive ? 'text-brand' : 'text-muted'}`}
                 >
                   <link.icon className="size-4" aria-hidden="true" />
                   {link.label}
@@ -78,7 +82,7 @@ export function AppShell() {
               <NavLink
                 to="/customers/new"
                 aria-label="Add customer"
-                className={({ isActive }) => `flex h-12 flex-col items-center justify-center gap-px text-[10px] leading-none font-semibold ${isActive ? 'text-brand' : 'text-muted'}`}
+                className={({ isActive }) => `flex h-12 min-w-0 flex-col items-center justify-center gap-px px-0.5 text-[10px] leading-none font-semibold ${isActive ? 'text-brand' : 'text-muted'}`}
               >
                 <Plus className="size-4" aria-hidden="true" />
                 Add
@@ -88,7 +92,7 @@ export function AppShell() {
               <li key={link.to}>
                 <NavLink
                   to={link.to}
-                  className={({ isActive }) => `flex h-12 flex-col items-center justify-center gap-px text-[10px] leading-none font-semibold ${isActive ? 'text-brand' : 'text-muted'}`}
+                  className={({ isActive }) => `flex h-12 min-w-0 flex-col items-center justify-center gap-px px-0.5 text-[10px] leading-none font-semibold ${isActive ? 'text-brand' : 'text-muted'}`}
                 >
                   <link.icon className="size-4" aria-hidden="true" />
                   {link.label}

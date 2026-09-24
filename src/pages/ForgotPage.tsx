@@ -11,7 +11,7 @@ export function ForgotPage() {
   const [busy, setBusy] = useState(false)
 
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col justify-center px-5">
+    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col overflow-y-auto px-4 py-6">
       <h1 className="page-title">Reset password</h1>
       <p className="mt-2 text-muted">We will email a reset link if this address has an account.</p>
       <form

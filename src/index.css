@@ -57,6 +57,12 @@ body,
   min-height: 100%;
 }
 
+html {
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 body {
   margin: 0;
   background: var(--bg);
@@ -64,6 +70,8 @@ body {
   font-family: var(--font-sans);
   font-size: 16px;
   line-height: 1.4;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -73,6 +81,14 @@ input,
 select,
 textarea {
   font: inherit;
+}
+
+input,
+select,
+textarea {
+  font-size: 16px;
+  max-width: 100%;
+  min-width: 0;
 }
 
 :focus-visible {
@@ -100,12 +116,13 @@ textarea {
 @layer components {
   .field {
     width: 100%;
-    min-height: 2.5rem;
+    min-height: 2.75rem;
     border-radius: 0.65rem;
     border: 1px solid var(--line);
     background: var(--surface);
     color: var(--ink);
-    padding: 0.4rem 0.7rem;
+    padding: 0.45rem 0.7rem;
+    scroll-margin-bottom: 5.5rem;
   }
 
   .field:focus {
@@ -129,7 +146,7 @@ textarea {
 
   .btn {
     display: inline-flex;
-    min-height: 2.5rem;
+    min-height: 2.75rem;
     align-items: center;
     justify-content: center;
     gap: 0.3rem;
@@ -192,7 +209,7 @@ textarea {
   }
 
   .app-pad {
-    padding-bottom: calc(3.25rem + env(safe-area-inset-bottom));
+    padding-bottom: calc(3.75rem + env(safe-area-inset-bottom));
   }
 }
 
@@ -209,7 +226,7 @@ html.dark .status-sold { background: #143224; color: #b6f0cc; }
 html.dark .status-lost { background: #4a1d1d; color: #ffc9c9; }
 
 .toast-stack {
-  bottom: calc(3.25rem + env(safe-area-inset-bottom));
+  bottom: calc(3.75rem + env(safe-area-inset-bottom));
 }
 
 @media (min-width: 768px) {

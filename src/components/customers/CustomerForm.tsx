@@ -235,7 +235,7 @@ export function CustomerForm({
           />
         </div>
       ) : null}
-      <button type="submit" className="btn btn-primary sticky bottom-3 z-10 w-full" disabled={submitting}>
+      <button type="submit" className="btn btn-primary w-full" disabled={submitting}>
         {submitting ? 'Saving customer…' : submitLabel}
       </button>
     </form>
@@ -272,7 +272,7 @@ function DateBlock({
           if (next !== 'custom') onDate(next)
         }}
       />
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid min-w-0 grid-cols-2 gap-2">
         <input className="field" type="date" value={date} onChange={(event) => onDate(event.target.value)} aria-label={`${label} date`} />
         <input className="field" type="time" value={time} onChange={(event) => onTime(event.target.value)} aria-label={`${label} time`} />
       </div>

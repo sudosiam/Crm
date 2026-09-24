@@ -39,7 +39,7 @@ export function LoginPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col justify-center px-4 py-8">
+    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col overflow-y-auto px-4 py-6">
       <p className="text-sm font-semibold tracking-[0.18em] text-brand">BPH</p>
       <h1 className="page-title mt-1">{BPH.name}</h1>
       <p className="mt-1 text-sm text-muted">{BPH.tagline}</p>

@@ -12,7 +12,7 @@ export function ResetPasswordPage() {
   const recovery = sessionStorage.getItem('bph.recovery') === '1' || Boolean(user)
 
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col justify-center px-5">
+    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col overflow-y-auto px-4 py-6">
       <h1 className="page-title">Choose a new password</h1>
       {recovery ? (
         <form

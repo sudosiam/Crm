@@ -42,7 +42,7 @@ export function RescheduleSheet({
           }}
         />
       </div>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid min-w-0 grid-cols-2 gap-2">
         <input className="field" type="date" value={date} onChange={(event) => setDate(event.target.value)} aria-label="Follow-up date" />
         <input className="field" type="time" value={time} onChange={(event) => setTime(event.target.value)} aria-label="Follow-up time" />
       </div>

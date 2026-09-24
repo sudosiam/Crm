@@ -49,19 +49,19 @@ export function CustomerCard({
       {showActions ? (
         <div className="grid grid-cols-2 border-t border-line">
           {call ? (
-            <a className="btn btn-secondary min-h-9 rounded-none border-r border-line text-xs" href={call}>
+            <a className="btn btn-secondary rounded-none border-r border-line text-xs" href={call}>
               <Phone className="size-4" aria-hidden="true" /> Call
             </a>
           ) : (
-            <span className="btn min-h-9 rounded-none border-r border-line text-xs text-muted">No phone</span>
+            <span className="btn rounded-none border-r border-line text-xs text-muted">No phone</span>
           )}
-          <button type="button" className="btn btn-secondary min-h-9 rounded-none text-xs" onClick={() => onWhatsApp?.(customer)}>
+          <button type="button" className="btn btn-secondary rounded-none text-xs" onClick={() => onWhatsApp?.(customer)}>
             <MessageCircle className="size-4" aria-hidden="true" /> WhatsApp
           </button>
-          <button type="button" className="btn btn-primary min-h-9 rounded-none border-t border-r border-line text-xs" onClick={() => onDone?.(customer)} disabled={!customer.followUpDate}>
+          <button type="button" className="btn btn-primary rounded-none border-t border-r border-line text-xs" onClick={() => onDone?.(customer)} disabled={!customer.followUpDate}>
             Done
           </button>
-          <button type="button" className="btn min-h-9 rounded-none border-t border-line bg-surface text-xs" onClick={() => onReschedule?.(customer)}>
+          <button type="button" className="btn rounded-none border-t border-line bg-surface text-xs" onClick={() => onReschedule?.(customer)}>
             Reschedule
           </button>
         </div>
