@@ -51,25 +51,25 @@ export function AppShell() {
       </aside>
       <div className="min-w-0">
         <OfflineBanner mode={mode} offline={offline} pending={pending} syncing={syncing} onSync={() => void sync()} />
-        <main className={`mx-auto w-full max-w-3xl px-4 pt-4 ${hideNav ? 'pb-8' : 'pb-24'} md:px-8 md:pb-10`}>
+        <main className={`mx-auto w-full max-w-3xl px-3 pt-3 ${hideNav ? 'pb-6' : 'pb-16'} md:px-8 md:pb-10`}>
           <Outlet />
         </main>
       </div>
       {hideNav ? null : (
         <nav
-          className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/95 backdrop-blur md:hidden"
-          style={{ paddingBottom: 'max(0.25rem, env(safe-area-inset-bottom))' }}
+          className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface md:hidden"
+          style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
           aria-label="Main"
         >
-          <ul className="grid grid-cols-5">
+          <ul className="grid h-12 grid-cols-5">
             {links.slice(0, 2).map((link) => (
               <li key={link.to}>
                 <NavLink
                   to={link.to}
                   end={link.end}
-                  className={({ isActive }) => `flex min-h-14 flex-col items-center justify-center gap-0.5 text-[11px] font-semibold tracking-tight ${isActive ? 'text-brand' : 'text-muted'}`}
+                  className={({ isActive }) => `flex h-12 flex-col items-center justify-center gap-px text-[10px] leading-none font-semibold ${isActive ? 'text-brand' : 'text-muted'}`}
                 >
-                  <link.icon className="size-5" aria-hidden="true" />
+                  <link.icon className="size-4" aria-hidden="true" />
                   {link.label}
                 </NavLink>
               </li>
@@ -78,11 +78,9 @@ export function AppShell() {
               <NavLink
                 to="/customers/new"
                 aria-label="Add customer"
-                className="flex min-h-14 flex-col items-center justify-center gap-0.5 text-[11px] font-semibold tracking-tight text-brand"
+                className="flex h-12 flex-col items-center justify-center gap-px text-[10px] leading-none font-semibold text-brand"
               >
-                <span className="flex size-8 items-center justify-center rounded-full bg-brand text-brand-ink">
-                  <Plus className="size-5" aria-hidden="true" />
-                </span>
+                <Plus className="size-4" aria-hidden="true" />
                 Add
               </NavLink>
             </li>
@@ -90,9 +88,9 @@ export function AppShell() {
               <li key={link.to}>
                 <NavLink
                   to={link.to}
-                  className={({ isActive }) => `flex min-h-14 flex-col items-center justify-center gap-0.5 text-[11px] font-semibold tracking-tight ${isActive ? 'text-brand' : 'text-muted'}`}
+                  className={({ isActive }) => `flex h-12 flex-col items-center justify-center gap-px text-[10px] leading-none font-semibold ${isActive ? 'text-brand' : 'text-muted'}`}
                 >
-                  <link.icon className="size-5" aria-hidden="true" />
+                  <link.icon className="size-4" aria-hidden="true" />
                   {link.label}
                 </NavLink>
               </li>

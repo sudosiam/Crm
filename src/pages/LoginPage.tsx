@@ -44,7 +44,7 @@ export function LoginPage() {
       <h1 className="page-title mt-1">{BPH.name}</h1>
       <p className="mt-1 text-sm text-muted">{BPH.tagline}</p>
       <form
-        className="card mt-5 space-y-3 p-4"
+        className="card mt-4 space-y-2.5 p-3"
         onSubmit={(event) => {
           event.preventDefault()
           void submit()

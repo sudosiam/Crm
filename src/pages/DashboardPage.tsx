@@ -70,7 +70,7 @@ export function DashboardPage() {
       {error ? <ErrorState message={error} onRetry={() => void load()} /> : null}
       {data ? (
         <>
-          <div className="mt-4 grid grid-cols-3 gap-2">
+          <div className="mt-3 grid grid-cols-3 gap-1.5">
             <MetricCard label="Follow-ups today" value={data.counts.followUpsToday} onClick={() => navigate('/follow-ups?tab=today')} />
             <MetricCard label="Overdue" value={data.counts.overdue} tone="warning" onClick={() => navigate('/follow-ups?tab=overdue')} />
             <MetricCard label="Test rides today" value={data.counts.testRidesToday} onClick={() => navigate('/test-rides')} />
@@ -78,34 +78,34 @@ export function DashboardPage() {
             <MetricCard label="Sold this month" value={data.counts.soldMonth} onClick={() => navigate('/sales')} />
             <MetricCard label="Lost this month" value={data.counts.lostMonth} onClick={() => navigate('/sales?tab=lost')} />
           </div>
-          <div className="mt-6">
+          <div className="mt-4">
             <SectionTitle>Overdue</SectionTitle>
             {data.overdue.length === 0 ? <EmptyState title="No overdue follow-ups." /> : (
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {data.overdue.map((customer) => (
                   <CustomerCard key={customer.id} customer={customer} today={today} showActions onWhatsApp={setWhatsapp} onDone={(item) => void done(item)} onReschedule={setReschedule} />
                 ))}
               </div>
             )}
           </div>
-          <div className="mt-6">
+          <div className="mt-4">
             <SectionTitle>Follow up today</SectionTitle>
             {data.followUpsToday.length === 0 ? <EmptyState title="No follow-ups today 🎉" /> : (
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {data.followUpsToday.map((customer) => (
                   <CustomerCard key={customer.id} customer={customer} today={today} showActions onWhatsApp={setWhatsapp} onDone={(item) => void done(item)} onReschedule={setReschedule} />
                 ))}
               </div>
             )}
           </div>
-          <div className="mt-6">
+          <div className="mt-4">
             <SectionTitle>Test rides today</SectionTitle>
             {data.testRidesToday.length === 0 ? <EmptyState title="No test rides scheduled." /> : (
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {data.testRidesToday.map((ride) => {
                   const person = workspace?.customers.find((item) => item.id === ride.customerId)
                   return (
-                    <Link key={ride.id} to={`/customers/${ride.customerId}`} className="card block p-3.5">
+                    <Link key={ride.id} to={`/customers/${ride.customerId}`} className="card block px-3 py-2.5">
                       <p className="font-semibold">{person?.name ?? 'Customer'}</p>
                       <p className="text-muted">{ride.model || person?.model || 'Model not set'}</p>
                       <p className="mt-1 font-semibold">{formatWhen(ride.scheduledDate, ride.scheduledTime, today)}</p>

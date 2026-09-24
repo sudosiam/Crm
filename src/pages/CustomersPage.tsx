@@ -61,7 +61,7 @@ export function CustomersPage() {
           <EmptyState title={search ? `No customers match “${search}”.` : 'No customers yet.'} body={search ? undefined : 'Add the first enquiry.'} />
         </div>
       ) : (
-        <div className="mt-4 space-y-3">
+        <div className="mt-3 space-y-2">
           {items.map((customer) => (
             <CustomerCard
               key={customer.id}

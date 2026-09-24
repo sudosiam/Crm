@@ -70,7 +70,7 @@ export function FollowUpsPage() {
       </div>
       {loading ? <LoadingState label="Loading follow-ups…" /> : null}
       {!loading && visible.length === 0 ? <div className="mt-4"><EmptyState title={empty} /></div> : (
-        <div className="mt-4 space-y-3">
+        <div className="mt-3 space-y-2">
           {visible.map(({ customer, followUp }) => (
             <div key={followUp.id}>
               {tab === 'completed' ? <p className="mb-1 text-sm text-muted">{formatDate(followUp.completedAt?.slice(0, 10) ?? followUp.scheduledDate, today)}</p> : null}

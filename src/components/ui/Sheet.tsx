@@ -31,7 +31,7 @@ export function Sheet({
         role="dialog"
         aria-modal="true"
         aria-labelledby="sheet-title"
-        className="max-h-[88dvh] w-full max-w-lg overflow-y-auto rounded-t-2xl bg-surface px-4 pt-3 pb-[max(1rem,env(safe-area-inset-bottom))] md:rounded-2xl md:p-5"
+        className="max-h-[88dvh] w-full max-w-lg overflow-y-auto rounded-t-xl bg-surface px-3 pt-2 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:rounded-xl md:p-4"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-line md:hidden" aria-hidden="true" />

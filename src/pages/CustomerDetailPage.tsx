@@ -85,7 +85,7 @@ export function CustomerDetailPage() {
         {call ? <a className="btn btn-primary" href={call}><Phone className="size-4" aria-hidden="true" /> Call</a> : null}
         <button type="button" className="btn btn-secondary" onClick={() => setWhatsapp('follow-up')}><MessageCircle className="size-4" aria-hidden="true" /> WhatsApp</button>
       </div>
-      <section className="card mt-4 p-4">
+      <section className="card mt-3 p-3">
         <h2 className="font-semibold">Follow-up</h2>
         <p className="mt-1">{formatWhen(customer.followUpDate, customer.followUpTime, today)}</p>
         <div className="mt-3 flex gap-2">
@@ -93,7 +93,7 @@ export function CustomerDetailPage() {
           <button type="button" className="btn btn-ghost flex-1" onClick={() => setReschedule(true)}>Set follow-up</button>
         </div>
       </section>
-      <section className="card mt-3 space-y-2 p-4 text-sm">
+      <section className="card mt-2 space-y-1.5 p-3 text-sm">
         <Row label="Source" value={customer.source} />
         <Row label="Budget" value={customer.budget} />
         <Row label="Enquiry" value={formatDate(customer.enquiryDate, today)} />

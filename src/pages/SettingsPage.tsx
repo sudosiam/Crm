@@ -51,7 +51,7 @@ export function SettingsPage() {
   return (
     <div className="space-y-6">
       <h1 className="page-title">Settings</h1>
-      <section className="card p-4">
+      <section className="card p-3">
         <h2 className="font-semibold">Your name</h2>
         <div className="mt-3 flex flex-col gap-2 sm:flex-row">
           <input className="field" value={name} onChange={(event) => setName(event.target.value)} />
@@ -59,7 +59,7 @@ export function SettingsPage() {
         </div>
         <p className="mt-2 text-sm text-muted">{user?.email}</p>
       </section>
-      <section className="card p-4">
+      <section className="card p-3">
         <SelectField
             label="Theme"
             value={preference}
@@ -71,7 +71,7 @@ export function SettingsPage() {
             onChange={(next) => setPreference(next as 'system' | 'light' | 'dark')}
         />
       </section>
-      <section className="card p-4">
+      <section className="card p-3">
         <h2 className="font-semibold">Reminders</h2>
         <p className="mt-2 text-sm text-muted">
           BPH can remind you when you open the app. Android and browsers do not guarantee an alert at the exact follow-up time while the app is closed. Overdue and today’s follow-ups always stay on the home screen.
@@ -100,7 +100,7 @@ export function SettingsPage() {
         </div>
       </section>
       {owner && business ? (
-        <section className="card space-y-3 p-4">
+        <section className="card space-y-2 p-3">
           <h2 className="font-semibold">Business</h2>
           {([
             ['name', 'Name'],
@@ -125,14 +125,14 @@ export function SettingsPage() {
           <button type="button" className="btn btn-secondary" onClick={() => void save(() => repo.setGoogleReviewUrl(review), 'Review link saved')}>Save review link</button>
         </section>
       ) : (
-        <section className="card p-4 text-sm text-muted">
+        <section className="card p-3 text-sm text-muted">
           <p className="font-semibold text-ink">{workspace.organization.name}</p>
           <p className="mt-1">{workspace.organization.address}</p>
           <p>{workspace.organization.businessHours}</p>
         </section>
       )}
       {owner ? (
-        <section className="card p-4">
+        <section className="card p-3">
           <h2 className="font-semibold">Products</h2>
           <p className="mt-1 text-sm text-muted">Names only. BPH does not store price, range, or warranty here.</p>
           {(['model', 'battery'] as const).map((kind) => (
@@ -174,7 +174,7 @@ export function SettingsPage() {
         </section>
       ) : null}
       {owner ? (
-        <section className="card p-4">
+        <section className="card p-3">
           <h2 className="font-semibold">Team</h2>
           <p className="mt-2 text-sm">Team code: <span className="font-semibold tracking-wider">{workspace.organization.joinCode}</span></p>
           <div className="mt-2 flex flex-wrap gap-2">
@@ -208,7 +208,7 @@ export function SettingsPage() {
         </section>
       ) : null}
       {owner ? (
-        <section className="card p-4">
+        <section className="card p-3">
           <h2 className="font-semibold">Backup</h2>
           <p className="mt-1 text-sm text-muted">Exports contain customer phone numbers. Keep the file private. Passwords are not included.</p>
           <div className="mt-3 flex flex-wrap gap-2">
@@ -246,7 +246,7 @@ export function SettingsPage() {
         </section>
       ) : null}
       {mode === 'demo' ? (
-        <section className="card p-4">
+        <section className="card p-3">
           <h2 className="font-semibold">Demo data</h2>
           <p className="mt-1 text-sm text-muted">This puts the sample showroom back and signs you out of the demo session.</p>
           <button type="button" className="btn btn-ghost mt-3" onClick={() => void repo.resetDemo().then(() => navigate('/login'))}>Reset demo data</button>

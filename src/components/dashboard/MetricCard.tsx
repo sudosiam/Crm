@@ -16,10 +16,10 @@ export function MetricCard({
     <button
       type="button"
       onClick={onClick}
-      className={`card min-h-16 px-2.5 py-2.5 text-left ${alert ? 'border-warning' : ''}`}
+      className={`card px-2 py-2 text-left ${alert ? 'border-warning' : ''}`}
     >
-      <span className={`block text-2xl font-semibold leading-none tracking-tight tabular-nums ${alert ? 'text-warning' : ''}`}>{value}</span>
-      <span className="mt-1 block text-[11px] leading-tight font-medium text-muted">{label}</span>
+      <span className={`block text-xl font-semibold leading-none tracking-tight tabular-nums ${alert ? 'text-warning' : ''}`}>{value}</span>
+      <span className="mt-0.5 block text-[10px] leading-tight font-medium text-muted">{label}</span>
     </button>
   )
 }

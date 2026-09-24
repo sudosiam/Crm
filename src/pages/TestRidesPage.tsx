@@ -68,9 +68,9 @@ function Section({
     <section className="mt-6">
       <h2 className="section-title">{title}</h2>
       {rides.length === 0 ? <div className="mt-3"><EmptyState title={empty} /></div> : (
-        <div className="mt-3 space-y-3">
+        <div className="mt-2 space-y-2">
           {rides.map((ride) => (
-            <article key={ride.id} className="card p-3.5">
+            <article key={ride.id} className="card px-3 py-2.5">
               <Link to={`/customers/${ride.customerId}`} className="font-semibold">{name(ride.customerId)}</Link>
               <p className="text-muted">{ride.model || 'Model not set'}</p>
               <p className="mt-1 font-semibold">{formatWhen(ride.scheduledDate, ride.scheduledTime, today)} · {ride.status === 'SCHEDULED' ? 'Scheduled' : ride.status === 'COMPLETED' ? 'Completed' : 'Cancelled'}</p>

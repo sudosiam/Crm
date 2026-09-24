@@ -113,7 +113,7 @@ export function CustomerForm({
 
   return (
     <form
-      className="space-y-5"
+      className="space-y-3"
       onSubmit={(event) => {
         event.preventDefault()
         onSubmit()
