@@ -39,6 +39,21 @@ export function humanizeError(error: unknown): string {
   if (/code not recognized|join code/i.test(message)) {
     return 'That team code was not recognized.'
   }
+  if (/enter the customer name/i.test(message)) {
+    return 'Enter the customer name, or leave it blank and save again.'
+  }
+  if (/permission denied|could not find the function/i.test(message)) {
+    return 'Could not save this lead. Sign out, sign in again, and try once more.'
+  }
+  if (/invalid input syntax for type (date|time)/i.test(message)) {
+    return 'Choose a valid date and time, then save again.'
+  }
   console.error(error)
   return 'Something went wrong. Please try again.'
+}
+
+/** Older databases still reject a blank name. The app retries once with a visible placeholder. */
+export function isLegacyNameRequired(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error)
+  return /enter the customer name/i.test(message)
 }

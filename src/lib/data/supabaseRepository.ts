@@ -1,6 +1,6 @@
 import type { RealtimeChannel, SupabaseClient } from '@supabase/supabase-js'
 import { customersToCsv, memberName, queryCustomers, summarizeDashboard } from '../customers'
-import { DomainError, humanizeError, isNetworkError } from '../errors'
+import { DomainError, humanizeError, isLegacyNameRequired, isNetworkError } from '../errors'
 import { buildBackup, parseBackup } from '../importExport'
 import { createId } from '../ids'
 import {
@@ -388,27 +388,44 @@ export class SupabaseRepository implements Repository {
       if (error) throw new Error(error.message)
     }
     switch (op.type) {
-      case 'createCustomer':
-        fail((await this.client.rpc('create_customer', this.customerArgs(op.customerId, op.input, op.allowDuplicate))).error)
+      case 'createCustomer': {
+        const save = async (name: string) => {
+          fail((await this.client.rpc('create_customer', this.customerArgs(op.customerId, { ...op.input, name }, op.allowDuplicate))).error)
+        }
+        try {
+          await save(op.input.name)
+        } catch (error) {
+          if (!op.input.name.trim() && isLegacyNameRequired(error)) await save('No name')
+          else throw error
+        }
         break
+      }
       case 'updateCustomer': {
         const current = this.requireWorkspace().customers.find((customer) => customer.id === op.customerId)
         if (!current) throw new DomainError('That customer could not be found.', 'not_found')
         const next = { ...current, ...op.patch }
-        fail((await this.client.rpc('update_customer', {
-          p_id: op.customerId,
-          p_name: next.name,
-          p_phone: next.phone,
-          p_status: next.status === 'SOLD' || next.status === 'LOST' ? null : (op.patch.status ?? next.status),
-          p_enquiry_date: next.enquiryDate,
-          p_model: next.model,
-          p_battery: next.batteryConfiguration,
-          p_budget: next.budget,
-          p_source: next.source,
-          p_notes: next.notes,
-          p_assigned_to: next.assignedTo,
-          p_allow_duplicate: op.allowDuplicate,
-        })).error)
+        const save = async (name: string) => {
+          fail((await this.client.rpc('update_customer', {
+            p_id: op.customerId,
+            p_name: name,
+            p_phone: next.phone,
+            p_status: next.status === 'SOLD' || next.status === 'LOST' ? null : (op.patch.status ?? next.status),
+            p_enquiry_date: next.enquiryDate,
+            p_model: next.model,
+            p_battery: next.batteryConfiguration,
+            p_budget: next.budget,
+            p_source: next.source,
+            p_notes: next.notes,
+            p_assigned_to: next.assignedTo,
+            p_allow_duplicate: op.allowDuplicate,
+          })).error)
+        }
+        try {
+          await save(next.name)
+        } catch (error) {
+          if (!next.name.trim() && isLegacyNameRequired(error)) await save('No name')
+          else throw error
+        }
         break
       }
       case 'scheduleFollowUp':
@@ -489,20 +506,24 @@ export class SupabaseRepository implements Repository {
   }
 
   private customerArgs(id: string, input: CustomerInput, allowDuplicate: boolean) {
+    const textOrNull = (value: string | null | undefined) => {
+      const trimmed = value?.trim() ?? ''
+      return trimmed ? trimmed : null
+    }
     return {
       p_id: id,
       p_name: input.name,
       p_phone: input.phone,
       p_status: input.status ?? null,
-      p_enquiry_date: input.enquiryDate ?? null,
+      p_enquiry_date: textOrNull(input.enquiryDate),
       p_model: input.model ?? null,
       p_battery: input.batteryConfiguration ?? null,
       p_budget: input.budget ?? null,
       p_source: input.source ?? null,
       p_notes: input.notes ?? null,
-      p_follow_up_date: input.followUpDate ?? null,
-      p_follow_up_time: input.followUpTime ?? null,
-      p_assigned_to: input.assignedTo ?? null,
+      p_follow_up_date: textOrNull(input.followUpDate),
+      p_follow_up_time: textOrNull(input.followUpTime),
+      p_assigned_to: input.assignedTo || null,
       p_allow_duplicate: allowDuplicate,
     }
   }

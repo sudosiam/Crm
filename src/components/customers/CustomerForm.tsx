@@ -84,6 +84,7 @@ export function CustomerForm({
   members,
   submitting,
   submitLabel,
+  error,
   onChange,
   onSubmit,
 }: {
@@ -92,6 +93,7 @@ export function CustomerForm({
   members: Member[]
   submitting: boolean
   submitLabel: string
+  error?: string
   onChange: (value: CustomerFormValue) => void
   onSubmit: () => void
 }) {
@@ -113,7 +115,8 @@ export function CustomerForm({
 
   return (
     <form
-      className="space-y-3"
+      className="space-y-3 max-md:pb-36"
+      noValidate
       onSubmit={(event) => {
         event.preventDefault()
         onSubmit()
@@ -235,9 +238,17 @@ export function CustomerForm({
           />
         </div>
       ) : null}
-      <button type="submit" className="btn btn-primary w-full" disabled={submitting}>
-        {submitting ? 'Saving customer…' : submitLabel}
-      </button>
+      <div
+        className="max-md:fixed max-md:inset-x-0 max-md:bottom-0 max-md:z-30 max-md:border-t max-md:border-line max-md:bg-surface max-md:px-3 max-md:pt-2"
+        style={{ paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom))' }}
+      >
+        {error ? (
+          <p className="mb-2 text-sm font-semibold text-danger" role="alert">{error}</p>
+        ) : null}
+        <button type="submit" className="btn btn-primary w-full" disabled={submitting}>
+          {submitting ? 'Saving customer…' : submitLabel}
+        </button>
+      </div>
     </form>
   )
 }

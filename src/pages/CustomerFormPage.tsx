@@ -7,6 +7,7 @@ import { LoadingState } from '../components/ui/LoadingState'
 import { useApp } from '../context/AppContext'
 import { useToast } from '../context/ToastContext'
 import { humanizeError } from '../lib/errors'
+import { normalizePhone } from '../lib/phone'
 import type { CustomerInput } from '../lib/types'
 
 function sourceOf(value: CustomerFormValue) {
@@ -42,11 +43,12 @@ export function CustomerFormPage() {
   const [busy, setBusy] = useState(false)
   const [duplicate, setDuplicate] = useState<'visible' | 'hidden' | null>(null)
   const [existingId, setExistingId] = useState<string | null>(null)
+  const userId = actor?.userId
 
   useEffect(() => {
-    if (!actor) return
+    if (!userId) return
     if (!id) {
-      setValue(emptyCustomerForm(actor.userId))
+      setValue(emptyCustomerForm(userId))
       return
     }
     let gone = false
@@ -58,7 +60,7 @@ export function CustomerFormPage() {
     return () => {
       gone = true
     }
-  }, [actor, id, repo])
+  }, [userId, id, repo])
 
   async function persist(allowDuplicate = false) {
     if (!value) return
@@ -121,6 +123,18 @@ export function CustomerFormPage() {
 
   async function submit() {
     if (!value) return
+    if (!normalizePhone(value.phone)) {
+      setError('Enter a valid 10-digit mobile number.')
+      return
+    }
+    if (value.status === 'LOST' && !value.lostReason) {
+      setError('Choose a reason.')
+      return
+    }
+    if (value.status === 'TEST_RIDE' && !value.testRideDate) {
+      setError('Choose a test ride date.')
+      return
+    }
     if (!id) {
       try {
         const match = await repo.findByPhone(value.phone)
@@ -147,7 +161,7 @@ export function CustomerFormPage() {
       <Link to={id ? `/customers/${id}` : '/customers'} className="text-sm font-semibold text-brand">Back</Link>
       <h1 className="page-title mt-2">{editing ? 'Edit customer' : 'Add customer'}</h1>
       <p className="mt-1 text-muted">Phone, model, and a follow-up are enough. Name can be added later.</p>
-      {error ? <div className="mt-4"><ErrorState message={error} /></div> : null}
+      {error && !value ? <div className="mt-4"><ErrorState message={error} /></div> : null}
       {value ? (
         <div className="mt-5">
           <CustomerForm
@@ -156,6 +170,7 @@ export function CustomerFormPage() {
             members={workspace.members}
             submitting={busy}
             submitLabel={editing ? 'Save changes' : 'Save customer'}
+            error={error}
             onChange={setValue}
             onSubmit={() => void submit()}
           />
